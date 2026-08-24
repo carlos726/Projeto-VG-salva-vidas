@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel TV - VG Salva Vidas</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+    }
+
+    body {
+      background-color: #0b1325;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      color: #f8fafc;
+    }
+
+    /* Barra Superior Informativa */
+    .top-bar {
+      height: 8vh;
+      background: linear-gradient(90deg, #0f172a, #1e293b);
+      border-bottom: 2px solid #0284c7;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 3vw;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .hospital-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.8vw;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 1px;
+    }
+
+    .hospital-brand span {
+      color: #38bdf8;
+    }
+
+    .top-info {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #4ade80;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.9vw;
+      font-weight: 600;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #22c55e;
+    }
+
+    .clock {
+      font-size: 1.6vw;
+      font-weight: 700;
+      color: #94a3b8;
+      letter-spacing: 1px;
+    }
+
+    /* Container Principal */
+    .tv-container {
+      display: flex;
+      flex: 1;
+      padding: 2vw;
+      gap: 2vw;
+    }
+
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      width: 32%;
+      gap: 2vw;
+    }
+
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      width: 68%;
+      gap: 2vw;
+    }
+
+    /* Estilo Base das Caixas */
+    .box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    .box-header {
+      font-size: 1.1vw;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #38bdf8;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Painel do Local */
+    .local-box { 
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      border-left: 6px solid #0284c7;
+    }
+    
+    .local-type {
+      color: #94a3b8;
+      font-size: 1.8vw;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .local-number {
+      color: #38bdf8;
+      font-size: 8vw;
+      font-weight: 900;
+      line-height: 1;
+      margin-top: 10px;
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+    }
+
+    /* Painel do Histórico */
+    .history-box {
+      flex: 1.2;
+    }
+    
+    #history-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    #history-list li {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.1vw;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+
+    #history-list li .hist-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 65%;
+    }
+
+    #history-list li .hist-local {
+      color: #22d3ee;
+      background: rgba(34, 211, 238, 0.1);
+      border: 1px solid rgba(34, 211, 238, 0.2);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.9vw;
+      font-weight: 700;
+    }
+
+    /* Painel Principal do Paciente */
+    .patient-box { 
+      flex: 1; 
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+      border: 2px solid #0284c7;
+      border-radius: 20px;
+      padding: 40px;
+    }
+    
+    .patient-label {
+      font-size: 1.3vw;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+    }
+
+    .patient-name {
+      color: #ffffff;
+      font-size: 5.2vw;
+      font-weight: 900;
+      line-height: 1.1;
+      word-break: break-word;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+    }
+
+    /* Rodapé do Painel */
+    .bottom-bar {
+      height: 5vh;
+      background-color: #0f172a;
+      border-top: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9vw;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    /* Animações e Efeitos de Destaque */
+    @keyframes highlight-card {
+      0% {
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.5);
+      }
+      50% {
+        background-color: #0369a1;
+      }
+      100% {
+        border-color: #0284c7;
+        box-shadow: 0 0 30px rgba(56, 189, 248, 0);
+      }
+    }
+    
+    .flash { 
+      animation: highlight-card 0.7s ease-in-out 3; 
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Superior Corporativo -->
+  <header class="top-bar">
+    <div class="hospital-brand">
+    <span>VG SALVA VIDAS</span>
+    </div>
+    <div class="top-info">
+      <div class="status-badge">
+        <div class="status-dot"></div>
+      </div>
+      <div class="clock" id="relogio">00:00:00</div>
+    </div>
+  </header>
+
+  <!-- Corpo Principal -->
+  <div class="tv-container">
+    
+    <div class="left-panel">
+      <!-- Caixa de Local -->
+      <div class="box local-box">
+        <div class="local-type" id="local-tipo">GUICHÊ</div>
+        <div class="local-number" id="local-numero">--</div>
+      </div>
+
+      <!-- Caixa do Histórico -->
+      <div class="box history-box">
+        <div class="box-header">
+          📋 Últimas Chamadas
+        </div>
+        <ul id="history-list">
+          <!-- Preenchido via JavaScript -->
+        </ul>
+      </div>
+    </div>
+    
+    <div class="right-panel">
+      <!-- Caixa Principal do Paciente Chamado -->
+      <div class="box patient-box">
+        <div class="patient-label">Paciente Chamado</div>
+        <div class="patient-name" id="patient-name">AGUARDANDO...</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Rodapé Institucional -->
+  <footer class="bottom-bar">
+    Atenção: Acompanhe o seu nome na tela e dirija-se ao local indicado.
+  </footer>
+
+<script>
+let ultimoId = null;
+
+// Relógio em tempo real
+function atualizarRelogio() {
+  const agora = new Date();
+  document.getElementById("relogio").innerText = agora.toLocaleTimeString('pt-BR');
+}
+setInterval(atualizarRelogio, 1000);
+atualizarRelogio();
+
+// Sinal sonoro corporativo via Web Audio API
+function tocarSinal() {
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+  osc.frequency.exponentialRampToValueAtTime(659.25, audioCtx.currentTime + 0.3); 
+
+  gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.8);
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.8);
+}
+
+// Chamada de áudio por síntese de voz
+function falarChamada(paciente, tipo, numero) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const texto = `Paciente ${paciente}, comparecer ao ${tipo} ${numero}`;
+    const mensagem = new SpeechSynthesisUtterance(texto);
+    mensagem.lang = 'pt-BR';
+    mensagem.rate = 0.95;
+    window.speechSynthesis.speak(mensagem);
+  }
+}
+
+// Requisição e atualização em tempo real
+function atualizar() {
+  fetch("/tv/chamada")
+    .then(r => r.json())
+    .then(data => {
+      const chamada = data.chamada;
+      const historico = data.historico || [];
+
+      if (chamada) {
+        const tipo = chamada.localTipo || "GUICHÊ";
+        const numero = chamada.localNumero || "--";
+        const paciente = chamada.paciente || "AGUARDANDO...";
+
+        document.getElementById("local-tipo").innerText = tipo;
+        document.getElementById("local-numero").innerText = numero;
+        document.getElementById("patient-name").innerText = paciente;
+
+        if (chamada.id !== ultimoId) {
+          ultimoId = chamada.id;
+          
+          const patientBox = document.querySelector(".patient-box");
+          patientBox.classList.remove("flash");
+          void patientBox.offsetWidth;
+          patientBox.classList.add("flash");
+
+          tocarSinal();
+          setTimeout(() => {
+            falarChamada(paciente, tipo, numero);
+          }, 800);
+        }
+      }
+
+      const list = document.getElementById("history-list");
+      list.innerHTML = "";
+      historico.slice(0, 4).forEach(h => {
+        const li = document.createElement("li");
+        const tipo = h.localTipo ? h.localTipo.substring(0, 4) : "GUIC";
+        li.innerHTML = `
+          <span class="hist-name">${h.paciente}</span> 
+          <span class="hist-local">${tipo}. ${h.localNumero}</span>
+        `;
+        list.appendChild(li);
+      });
+    })
+    .catch(err => console.log("Erro ao buscar chamada:", err));
+}
+
+atualizar();
+setInterval(atualizar, 2000);
+</script>
+
+</body>
+</html>

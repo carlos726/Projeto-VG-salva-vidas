@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Atendimento</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <h2>Atendimento</h2>
+
+    <input id="nome" placeholder="Nome">
+    <input id="cpf" placeholder="CPF">
+
+    <select id="tipo">
+      <option>Convenio</option>
+      <option>Particular</option>
+    </select>
+
+    <input type="file" id="foto">
+
+    <button onclick="cadastrar()">Cadastrar</button>
+  </div>
+
+  <script>
+    function cadastrar() {
+      const nome = document.getElementById("nome").value;
+      const cpf = document.getElementById("cpf").value;
+      const tipo = document.getElementById("tipo").value;
+
+      fetch("http://localhost:3000/atendimento", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: nome,
+          cpf: cpf,
+          tipo: tipo
+        })
+      })
+      .then(response => {
+        if (response.ok) {
+          alert("Paciente enviado para triagem");
+        } else {
+          alert("Erro ao enviar paciente");
+        }
+      })
+      .catch(error => {
+        console.error("Erro na requisição:", error);
+        alert("Erro de conexão com o servidor");
+      });
+    }
+  </script>
+
+</body>
+</html>

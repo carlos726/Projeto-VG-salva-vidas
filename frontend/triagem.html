@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triagem - VG Salva Vidas</title>
+  <style>
+    /* ==========================================
+       RESET & VARIÁVEIS
+       ========================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    :root {
+      --primary: #0d47a1;
+      --primary-light: #eef5fc;
+      --secondary: #0097a7;
+      --secondary-hover: #00838f;
+      --accent: #0288d1;
+      --accent-hover: #0277bd;
+      --success: #2e7d32;
+      --success-hover: #1b5e20;
+      --gray-bg: #f4f7f9;
+      --border-color: #dcdfe6;
+      --text-main: #333333;
+      --text-muted: #666666;
+      --radius: 8px;
+      --transition: all 0.2s ease-in-out;
+    }
+
+    body {
+      background-color: var(--gray-bg);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 40px 15px;
+    }
+
+    /* ==========================================
+       CONTAINER PRINCIPAL
+       ========================================== */
+    .container {
+      width: 100%;
+      max-width: 800px;
+      background-color: #ffffff;
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    /* ==========================================
+       CABEÇALHO
+       ========================================== */
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #eef2f5;
+    }
+
+    .header-container h2 {
+      color: var(--primary);
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    /* ==========================================
+       BOTÕES GERAIS
+       ========================================== */
+    .btn-abrir-tv {
+      background-color: var(--secondary);
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+    }
+
+    .btn-abrir-tv:hover {
+      background-color: var(--secondary-hover);
+    }
+
+    .btn-tv {
+      background: var(--success);
+      color: #ffffff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .btn-tv:hover {
+      background: var(--success-hover);
+    }
+
+    .btn-refresh {
+      margin-top: 12px;
+      background: #6c757d;
+      color: #ffffff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: var(--transition);
+    }
+
+    .btn-refresh:hover {
+      background: #5a6268;
+    }
+
+    .btn-salvar {
+      width: 100%;
+      background-color: var(--accent);
+      color: #ffffff;
+      padding: 12px;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: var(--transition);
+    }
+
+    .btn-salvar:hover {
+      background-color: var(--accent-hover);
+    }
+
+    /* ==========================================
+       FILA DE PACIENTES
+       ========================================== */
+    .pacientes-fila {
+      margin-bottom: 30px;
+      background: var(--primary-light);
+      border-radius: var(--radius);
+      padding: 20px;
+      border: 1px solid #d0e1f9;
+    }
+
+    .pacientes-fila h3 {
+      margin-bottom: 12px;
+      color: #1565c0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 17px;
+    }
+
+    .pacientes-fila h3 span {
+      font-size: 12px;
+      font-weight: normal;
+      color: var(--text-muted);
+    }
+
+    .fila-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 10px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+      transition: var(--transition);
+    }
+
+    .fila-item:hover {
+      border-color: #b0c4de;
+    }
+
+    .fila-item strong {
+      font-size: 14px;
+      color: #2c3e50;
+    }
+
+    .fila-item small {
+      color: #7f8c8d;
+      font-size: 12px;
+    }
+
+    /* ==========================================
+       FORMULÁRIO DE TRIAGEM
+       ========================================== */
+    h3 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    hr {
+      border: 0;
+      height: 1px;
+      background: #eef2f5;
+      margin: 25px 0;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 11px 14px;
+      margin-bottom: 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 14px;
+      background-color: #ffffff;
+      color: var(--text-main);
+      outline: none;
+      transition: var(--transition);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(2, 136, 209, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* ==========================================
+       RESULTADOS DA CLASSIFICAÇÃO DE RISCO
+       ========================================== */
+    #resultado {
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-align: center;
+      margin-top: 15px;
+      display: none;
+      font-size: 14px;
+    }
+
+    #resultado.verde {
+      display: block;
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    #resultado.amarelo {
+      display: block;
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+    }
+
+    #resultado.vermelho {
+      display: block;
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- Cabeçalho -->
+    <div class="header-container">
+      <h2>🏥 Triagem Hospitalar</h2>
+      <button class="btn-abrir-tv" onclick="window.open('tv.html','_blank')">📺 Abrir Tela da TV</button>
+    </div>
+
+    <!-- Fila de Pacientes -->
+    <div class="pacientes-fila">
+      <h3>
+        Pacientes Cadastrados no Atendimento
+        <span>Clique em "Chamar na TV" para chamar ao guichê</span>
+      </h3>
+      
+      <div id="fila-pacientes">
+        <p style="color:#888; text-align:center;">Carregando...</p>
+      </div>
+
+      <button class="btn-refresh" onclick="carregarPacientes()">🔄 Atualizar lista</button>
+    </div>
+
+    <hr>
+
+    <!-- Formulário de Triagem -->
+    <h3>Formulário de Triagem</h3>
+    
+    <input id="nome" type="text" placeholder="Nome do paciente" required>
+
+    <select id="sintoma" required>
+      <option value="">Selecione o sintoma</option>
+      <option value="dor_leve">Dor leve</option>
+      <option value="resfriado">Resfriado</option>
+      <option value="coriza">Coriza</option>
+      <option value="tosse">Tosse</option>
+      <option value="febre">Febre</option>
+      <option value="vomito">Vômito</option>
+      <option value="diarreia">Diarreia</option>
+      <option value="falta_ar_moderada">Falta de ar moderada</option>
+      <option value="falta_ar_grave">Falta de ar grave</option>
+      <option value="infarto">Suspeita de infarto</option>
+      <option value="avc">Suspeita de AVC</option>
+      <option value="convulsao">Convulsão</option>
+      <option value="hemorragia">Hemorragia</option>
+    </select>
+
+    <input id="temp" type="number" step="0.1" placeholder="Temperatura (°C)">
+    <input id="alergia" type="text" placeholder="Alergias">
+    <textarea id="observacao" placeholder="Observações"></textarea>
+
+    <!-- Exibição do Risco -->
+    <div id="resultado"></div>
+
+    <button class="btn-salvar" onclick="salvar()">Salvar Triagem</button>
+
+  </div>
+
+  <script>
+    function carregarPacientes() {
+      fetch("/pacientes")
+        .then(r => {
+          if (!r.ok) throw new Error("Erro na requisição");
+          return r.json();
+        })
+        .then(pacientes => {
+          const div = document.getElementById("fila-pacientes");
+          const fila = pacientes.filter(p => p.status === "triagem");
+
+          if (fila.length === 0) {
+            div.innerHTML = "<p style='color:#888; text-align:center;'>Nenhum paciente aguardando.</p>";
+            return;
+          }
+
+          div.innerHTML = "";
+          fila.forEach(p => {
+            const item = document.createElement("div");
+            item.className = "fila-item";
+            item.innerHTML = `
+              <div>
+                <strong>${p.nome}</strong><br>
+                <small>CPF: ${p.cpf || "—"} | Tipo: ${p.tipo || "—"}</small>
+              </div>
+              <button class="btn-tv" onclick="chamarNaTV('${p.nome}')">📺 Chamar na TV</button>
+            `;
+            div.appendChild(item);
+          });
+        })
+        .catch(() => {
+          document.getElementById("fila-pacientes").innerHTML =
+            "<p style='color:red; text-align:center;'>Erro ao carregar pacientes.</p>";
+        });
+    }
+
+    function chamarNaTV(nome) {
+      fetch("/tv/chamar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          localTipo: "GUICHÊ",
+          localNumero: "01",
+          paciente: nome
+        })
+      })
+      .then(r => {
+        if (!r.ok) throw new Error("Falha ao chamar na TV");
+        return r.json();
+      })
+      .then(() => {
+        alert("✅ " + nome + " foi chamado na TV para o Guichê 01!");
+        carregarPacientes();
+      })
+      .catch(err => {
+        alert("❌ Erro ao chamar na TV: " + err.message);
+      });
+    }
+
+    function classificarRisco(sintoma, temperatura) {
+      const vermelhos = ["infarto", "avc", "convulsao", "hemorragia", "falta_ar_grave"];
+      const amarelos = ["febre", "vomito", "diarreia", "falta_ar_moderada"];
+      
+      if (temperatura >= 39) return "vermelho";
+      if (vermelhos.includes(sintoma)) return "vermelho";
+      if (amarelos.includes(sintoma)) return "amarelo";
+      return "verde";
+    }
+
+    function salvar() {
+      const nome = document.getElementById("nome").value;
+      const sintoma = document.getElementById("sintoma").value;
+      const temperatura = Number(document.getElementById("temp").value);
+      const alergia = document.getElementById("alergia").value;
+      const observacao = document.getElementById("observacao").value;
+
+      if (!nome || !sintoma) {
+        alert("Por favor, preencha o nome e o sintoma.");
+        return;
+      }
+
+      const risco = classificarRisco(sintoma, temperatura);
+
+      fetch("/triagem", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, sintoma, temperatura, alergia, observacao, risco })
+      })
+      .then(r => {
+        if (!r.ok) throw new Error("Erro ao salvar triagem");
+        return r.json();
+      })
+      .then(data => {
+        const resultado = document.getElementById("resultado");
+        resultado.className = risco;
+        resultado.innerHTML = "CLASSIFICAÇÃO DE RISCO: " + risco.toUpperCase();
+        alert("Triagem salva com sucesso!");
+        carregarPacientes();
+      })
+      .catch(err => {
+        alert("❌ Erro ao salvar a triagem: " + err.message);
+      });
+    }
+
+    carregarPacientes();
+    setInterval(carregarPacientes, 10000);
+  </script>
+</body>
+</html>

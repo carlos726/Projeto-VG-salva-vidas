@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Médico - VG Salva Vidas</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --bg-main: #f8fafc;
+      --surface: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      
+      /* Cores do Manchester */
+      --vermelho-bg: #fef2f2; --vermelho-border: #fecaca; --vermelho-text: #dc2626;
+      --amarelo-bg: #fefce8; --amarelo-border: #fef08a; --amarelo-text: #ca8a04;
+      --verde-bg: #f0fdf4; --verde-border: #bbf7d0; --verde-text: #16a34a;
+      --azul-bg: #eff6ff; --azul-border: #bfdbfe; --azul-text: #2563eb;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      padding: 32px 24px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Topo / Header */
+    .header-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-title h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* Bar Configuração do Consultório */
+    .consultorio-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .consultorio-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .consultorio-info label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .consultorio-info input {
+      width: 70px;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+      color: var(--primary);
+      background: #f1f5f9;
+    }
+
+    .consultorio-info input:focus {
+      border-color: var(--primary);
+      background: #fff;
+    }
+
+    .consultorio-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Seções */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Cards da Fila */
+    .triagens-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 10px;
+    }
+
+    .card-patient-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .card-body {
+      font-size: 0.875rem;
+      color: #334155;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card-body p {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .card-body b {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    /* Badges de Risco */
+    .badge-risco {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    .badge-risco.vermelho, .vermelho { background: var(--vermelho-bg); border: 1px solid var(--vermelho-border); color: var(--vermelho-text); }
+    .badge-risco.amarelo, .amarelo { background: var(--amarelo-bg); border: 1px solid var(--amarelo-border); color: var(--amarelo-text); }
+    .badge-risco.verde, .verde { background: var(--verde-bg); border: 1px solid var(--verde-border); color: var(--verde-text); }
+    .badge-risco.azul, .azul { background: var(--azul-bg); border: 1px solid var(--azul-border); color: var(--azul-text); }
+
+    /* Formulario de Consulta */
+    .consulta-form {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+      background: #fff;
+      color: var(--text-main);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    input[readonly] {
+      background: #f8fafc;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    /* Botões */
+    .btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .btn-success { background: #16a34a; color: #fff; flex: 1; }
+    .btn-success:hover { background: #15803d; }
+
+    .btn-tv { background: #0284c7; color: #fff; flex: 1; }
+    .btn-tv:hover { background: #0369a1; }
+
+    .btn-outline-tv {
+      background: #f0f9ff;
+      color: #0284c7;
+      border: 1px solid #bae6fd;
+    }
+    .btn-outline-tv:hover { background: #e0f2fe; }
+
+    .empty-state {
+      text-align: center;
+      padding: 32px;
+      color: var(--text-muted);
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      grid-column: 1 / -1;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- Cabeçalho -->
+  <div class="header-panel">
+    <div class="header-title">
+      <h2>🩺 Painel de Atendimento Médico</h2>
+    </div>
+    <button class="btn btn-outline-tv" onclick="window.open('tv.html','_blank')">
+      📺 Abrir Tela da TV
+    </button>
+  </div>
+
+  <!-- Identificador do Consultório -->
+  <div class="consultorio-bar">
+    <div class="consultorio-info">
+      <label for="consultorio-num">Meu Consultório:</label>
+      <input type="text" id="consultorio-num" value="01">
+    </div>
+    <span class="consultorio-desc">Esta numeração será direcionada ao painel da TV ao chamar o paciente.</span>
+  </div>
+
+  <!-- Fila de Triagem -->
+  <div>
+    <div class="section-title">📋 Pacientes na Fila de Espera</div>
+    <div id="triagens" class="triagens-grid"></div>
+  </div>
+
+  <!-- Formulário de Prontuário/Consulta -->
+  <div>
+    <div class="section-title">📝 Registro de Consulta</div>
+    <div class="consulta-form">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Paciente Selecionado</label>
+          <input id="paciente" placeholder="Clique em 'Atender' na lista acima" readonly>
+        </div>
+        <div class="form-group">
+          <label>Medicação Prescrita</label>
+          <select id="medicacao">
+            <option value="">Selecione a medicação</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Diagnóstico</label>
+        <input id="diagnostico" placeholder="Informe o diagnóstico do paciente">
+      </div>
+
+      <div class="form-group">
+        <label>Observações Clínicas</label>
+        <textarea id="obs" placeholder="Observações clínicas adicionais, conduta ou orientações..."></textarea>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end;">
+        <button class="btn btn-primary" style="padding: 12px 24px;" onclick="salvar()">Finalizar e Salvar Consulta</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let triagensCarregadas = [];
+
+function carregar() {
+  fetch("/triagens")
+    .then(r => r.json())
+    .then(data => {
+      triagensCarregadas = data;
+      const div = document.getElementById("triagens");
+      div.innerHTML = "";
+
+      if (data.length === 0) {
+        div.innerHTML = `<div class="empty-state">Nenhum paciente aguardando atendimento no momento.</div>`;
+        return;
+      }
+
+      data.forEach((t, index) => {
+        const riscoClass = (t.risco || 'verde').toLowerCase();
+        div.innerHTML += `
+          <div class="card">
+            <div class="card-header">
+              <span class="card-patient-name">${t.nome}</span>
+              <span class="badge-risco ${riscoClass}">${t.risco || "Verde"}</span>
+            </div>
+            <div class="card-body">
+              <p><b>Sintoma:</b> <span>${t.sintoma || "Não informado"}</span></p>
+              <p><b>Temperatura:</b> <span>${t.temperatura ? t.temperatura + "°C" : "N/I"}</span></p>
+              <p><b>Alergia:</b> <span>${t.alergia || "Nenhuma"}</span></p>
+              <p><b>Obs:</b> <span>${t.observacao || "Nenhuma"}</span></p>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-success" onclick="selecionar(${index})">Atender</button>
+              <button class="btn btn-tv" onclick="chamarNaTV('${t.nome}')">📺 Chamar</button>
+            </div>
+          </div>
+        `;
+      });
+    })
+    .catch(() => {
+      document.getElementById("triagens").innerHTML = 
+        `<div class="empty-state" style="color: #dc2626;">Erro ao carregar a lista de triagem.</div>`;
+    });
+}
+
+function chamarNaTV(nome) {
+  const consultorio = document.getElementById("consultorio-num").value || "01";
+  fetch("/tv/chamar", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      localTipo: "CONSULTÓRIO",
+      localNumero: consultorio,
+      paciente: nome
+    })
+  })
+  .then(r => r.json())
+  .then(() => {
+    alert("✅ " + nome + " foi chamado na TV para o Consultório " + consultorio + "!");
+  });
+}
+
+function selecionar(index) {
+  const t = triagensCarregadas[index];
+  document.getElementById("paciente").value = t.nome;
+  document.getElementById("obs").value = t.observacao || "";
+
+  if (t.alergia && t.alergia !== "Nenhuma") {
+    alert("⚠️ ALERTA DE ALERGIA: " + t.alergia);
+  }
+}
+
+function carregarMedicacoes() {
+  fetch("/lista-medicacoes")
+    .then(r => r.json())
+    .then(data => {
+      const select = document.getElementById("medicacao");
+      select.innerHTML = `<option value="">Selecione a medicação</option>`;
+      data.forEach(med => {
+        const option = document.createElement("option");
+        option.value = med;
+        option.textContent = med;
+        select.appendChild(option);
+      });
+    });
+}
+
+function salvar() {
+  const paciente = document.getElementById("paciente").value;
+  const diagnostico = document.getElementById("diagnostico").value;
+  const medicacao = document.getElementById("medicacao").value;
+  const obs = document.getElementById("obs").value;
+
+  if (!paciente) { alert("Selecione um paciente clicando em Atender."); return; }
+  if (!medicacao) { alert("Selecione uma medicação."); return; }
+
+  fetch("/consulta", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ paciente, diagnostico, medicacao, obs })
+  })
+  .then(r => r.json())
+  .then(() => {
+    alert("Consulta salva com sucesso!");
+    document.getElementById("paciente").value = "";
+    document.getElementById("diagnostico").value = "";
+    document.getElementById("medicacao").value = "";
+    document.getElementById("obs").value = "";
+    carregar();
+  });
+}
+
+carregar();
+carregarMedicacoes();
+setInterval(carregar, 10000);
+</script>
+
+</body>
+</html>

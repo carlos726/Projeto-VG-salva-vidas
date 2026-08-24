@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Hospital VG Salva Vidas</title>
+  <link rel="stylesheet" href="css/1style.css">
+</head>
+<body>
+
+  <main class="container">
+    <div class="header">
+      <div class="logo">
+        <img src="vg-salvaaaaa.jpg" alt="Logo VG Salva Vidas Hospital" style="max-width: 120px; height: auto;">
+      </div>
+      <h2>VG Salva Vidas</h2>
+      <p>Informe suas credenciais para acessar</p>
+    </div>
+
+    <form id="loginForm" onsubmit="login(event)">
+      <div id="mensagemErro" class="erro-msg" hidden></div>
+
+      <div class="input-group">
+        <label for="usuario">Usuário</label>
+        <input id="usuario" type="text" placeholder="Digite seu usuário" required autocomplete="username">
+      </div>
+
+      <div class="input-group">
+        <label for="senha">Senha</label>
+        <input id="senha" type="password" placeholder="Digite sua senha" required autocomplete="current-password">
+      </div>
+
+      <button type="submit" id="btnEntrar">
+        <span class="btn-text">Entrar</span>
+        <span class="spinner" hidden></span>
+      </button>
+    </form>
+  </main>
+
+  <script>
+    async function login(event) {
+      event.preventDefault();
+
+      const usuarioInput = document.getElementById("usuario");
+      const senhaInput = document.getElementById("senha");
+      const btnEntrar = document.getElementById("btnEntrar");
+      const btnText = btnEntrar.querySelector(".btn-text");
+      const spinner = btnEntrar.querySelector(".spinner");
+      const msgErro = document.getElementById("mensagemErro");
+
+      // Reset de estado
+      msgErro.hidden = true;
+      btnEntrar.disabled = true;
+      btnText.textContent = "Autenticando...";
+      spinner.hidden = false;
+
+      try {
+        const response = await fetch("http://localhost:3000/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            usuario: usuarioInput.value.trim(),
+            senha: senhaInput.value
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error("Usuário ou senha inválidos.");
+        }
+
+        const data = await response.json();
+
+        const rotas = {
+          triagem: "triagem.html",
+          medico: "medico.html",
+          atendimento: "atendimento.html"
+        };
+
+        if (rotas[data.tipo]) {
+          location.href = rotas[data.tipo];
+        } else {
+          throw new Error("Perfil de acesso não reconhecido.");
+        }
+
+      } catch (error) {
+        msgErro.textContent = error.message || "Erro ao conectar com o servidor.";
+        msgErro.hidden = false;
+      } finally {
+        btnEntrar.disabled = false;
+        btnText.textContent = "Entrar";
+        spinner.hidden = true;
+      }
+    }
+  </script>
+
+</body>
+</html>
