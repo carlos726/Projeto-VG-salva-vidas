@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Cadastro de Paciente</title>
-
   <link rel="stylesheet" href="css/3style.css">
 </head>
 
@@ -18,7 +16,6 @@
       <div class="header-content">
         <div class="logo">
           <div class="logo-icon">+</div>
-
           <div>
             <h1>Atendimento</h1>
             <span>Sistema de Cadastro</span>
@@ -51,7 +48,6 @@
 
           <div class="section-header">
             <div class="section-number">1</div>
-
             <div>
               <h3>Dados pessoais</h3>
               <p>Informações básicas do paciente</p>
@@ -65,7 +61,6 @@
               <label for="nome">
                 Nome completo <span>*</span>
               </label>
-
               <input
                 id="nome"
                 type="text"
@@ -76,11 +71,9 @@
 
 
             <div class="field">
-
               <label for="tipoDocumento">
                 Tipo de documento <span>*</span>
               </label>
-
               <select id="tipoDocumento" required>
                 <option value="">Selecione</option>
                 <option value="CPF">CPF</option>
@@ -88,125 +81,73 @@
                 <option value="CNH">CNH</option>
                 <option value="Outro">Outro documento</option>
               </select>
-
             </div>
 
 
             <div class="field">
-
               <label for="documento">
                 Número do documento <span>*</span>
               </label>
-
               <input
                 id="documento"
                 type="text"
                 placeholder="Digite o documento"
                 required
               >
-
             </div>
 
 
             <div class="field">
-
               <label for="dataNascimento">
                 Data de nascimento <span>*</span>
               </label>
-
               <input
                 id="dataNascimento"
                 type="date"
                 required
               >
-
             </div>
 
 
             <div class="field">
-
               <label for="sexo">
                 Sexo <span>*</span>
               </label>
-
               <select id="sexo" required>
-
                 <option value="">Selecione</option>
-
-                <option value="Feminino">
-                  Feminino
-                </option>
-
-                <option value="Masculino">
-                  Masculino
-                </option>
-
-                <option value="Outro">
-                  Outro
-                </option>
-
-                <option value="Nao informado">
-                  Prefiro não informar
-                </option>
-
+                <option value="Feminino">Feminino</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Outro">Outro</option>
+                <option value="Nao informado">Prefiro não informar</option>
               </select>
-
             </div>
 
 
             <div class="field">
-
               <label for="nomeMae">
                 Nome da mãe
               </label>
-
               <input
                 id="nomeMae"
                 type="text"
                 placeholder="Digite o nome da mãe"
               >
-
             </div>
 
 
             <div class="field">
-
               <label for="estadoCivil">
                 Estado civil
               </label>
-
               <select id="estadoCivil">
-
-                <option value="">
-                  Selecione
-                </option>
-
-                <option value="Solteiro(a)">
-                  Solteiro(a)
-                </option>
-
-                <option value="Casado(a)">
-                  Casado(a)
-                </option>
-
-                <option value="Divorciado(a)">
-                  Divorciado(a)
-                </option>
-
-                <option value="Viuvo(a)">
-                  Viúvo(a)
-                </option>
-
-                <option value="Uniao estavel">
-                  União estável
-                </option>
-
-                <option value="Outro">
-                  Outro
-                </option>
-
+                <option value="">Selecione</option>
+                <option value="Solteiro(a)">Solteiro(a)</option>
+                <option value="Casado(a)">Casado(a)</option>
+                <option value="Divorciado(a)">Divorciado(a)</option>
+                <option value="Viuvo(a)">Viúvo(a)</option>
+                <option value="Uniao estavel">União estável</option>
+                <option value="Outro">Outro</option>
               </select>
-
             </div>
 
           </div>
@@ -218,63 +159,49 @@
         <section class="form-section">
 
           <div class="section-header">
-
-            <div class="section-number">
-              2
-            </div>
-
+            <div class="section-number">2</div>
             <div>
               <h3>Endereço e contato</h3>
               <p>Informações para contato com o paciente</p>
             </div>
-
           </div>
 
 
           <div class="form-grid">
 
             <div class="field field-full">
-
               <label for="endereco">
                 Endereço completo
               </label>
-
               <input
                 id="endereco"
                 type="text"
                 placeholder="Rua, número, bairro, cidade e estado"
               >
-
             </div>
 
 
             <div class="field">
-
               <label for="telefone">
                 Telefone
               </label>
-
               <input
                 id="telefone"
                 type="tel"
                 placeholder="(00) 00000-0000"
               >
-
             </div>
 
 
             <div class="field">
-
               <label for="email">
                 E-mail
               </label>
-
               <input
                 id="email"
                 type="email"
                 placeholder="paciente@email.com"
               >
-
             </div>
 
           </div>
@@ -286,63 +213,49 @@
         <section class="form-section">
 
           <div class="section-header">
-
-            <div class="section-number">
-              3
-            </div>
-
+            <div class="section-number">3</div>
             <div>
               <h3>Contato de emergência</h3>
               <p>Pessoa que poderá ser contatada em caso de necessidade</p>
             </div>
-
           </div>
 
 
           <div class="form-grid">
 
             <div class="field">
-
               <label for="contatoEmergenciaNome">
                 Nome
               </label>
-
               <input
                 id="contatoEmergenciaNome"
                 type="text"
                 placeholder="Nome do contato"
               >
-
             </div>
 
 
             <div class="field">
-
               <label for="contatoEmergenciaTelefone">
                 Telefone
               </label>
-
               <input
                 id="contatoEmergenciaTelefone"
                 type="tel"
                 placeholder="(00) 00000-0000"
               >
-
             </div>
 
 
             <div class="field">
-
               <label for="contatoEmergenciaParentesco">
                 Parentesco / relação
               </label>
-
               <input
                 id="contatoEmergenciaParentesco"
                 type="text"
                 placeholder="Ex.: Mãe, pai, esposo(a)"
               >
-
             </div>
 
           </div>
@@ -354,58 +267,38 @@
         <section class="form-section">
 
           <div class="section-header">
-
-            <div class="section-number">
-              4
-            </div>
-
+            <div class="section-number">4</div>
             <div>
               <h3>Dados do atendimento</h3>
               <p>Informações relacionadas ao atendimento</p>
             </div>
-
           </div>
 
 
           <div class="form-grid">
 
             <div class="field">
-
               <label for="tipo">
                 Tipo de atendimento <span>*</span>
               </label>
-
               <select id="tipo" required>
-
-                <option value="Convenio">
-                  Convênio
-                </option>
-
-                <option value="Particular">
-                  Particular
-                </option>
-
+                <option value="Convenio">Convênio</option>
+                <option value="Particular">Particular</option>
               </select>
-
             </div>
 
 
             <div class="field">
-
               <label for="foto">
                 Foto do paciente
               </label>
-
               <div class="file-input">
-
                 <input
                   type="file"
                   id="foto"
                   accept="image/*"
                 >
-
               </div>
-
             </div>
 
           </div>
@@ -415,7 +308,6 @@
 
         <!-- Rodapé do formulário -->
         <div class="form-footer">
-
           <p>
             <span>*</span> Campos obrigatórios
           </p>
@@ -428,7 +320,6 @@
             <span>✓</span>
             Cadastrar paciente
           </button>
-
         </div>
 
       </div>
@@ -443,62 +334,25 @@
 
 
   <script>
-
     function cadastrar() {
 
       const dados = {
-
         nome: document.getElementById("nome").value,
-
-        tipoDocumento:
-          document.getElementById("tipoDocumento").value,
-
-        documento:
-          document.getElementById("documento").value,
-
-        dataNascimento:
-          document.getElementById("dataNascimento").value,
-
-        sexo:
-          document.getElementById("sexo").value,
-
-        nomeMae:
-          document.getElementById("nomeMae").value,
-
-        estadoCivil:
-          document.getElementById("estadoCivil").value,
-
-        endereco:
-          document.getElementById("endereco").value,
-
-        telefone:
-          document.getElementById("telefone").value,
-
-        email:
-          document.getElementById("email").value,
-
+        tipoDocumento: document.getElementById("tipoDocumento").value,
+        documento: document.getElementById("documento").value,
+        dataNascimento: document.getElementById("dataNascimento").value,
+        sexo: document.getElementById("sexo").value,
+        nomeMae: document.getElementById("nomeMae").value,
+        estadoCivil: document.getElementById("estadoCivil").value,
+        endereco: document.getElementById("endereco").value,
+        telefone: document.getElementById("telefone").value,
+        email: document.getElementById("email").value,
         contatoEmergencia: {
-
-          nome:
-            document.getElementById(
-              "contatoEmergenciaNome"
-            ).value,
-
-          telefone:
-            document.getElementById(
-              "contatoEmergenciaTelefone"
-            ).value,
-
-          parentesco:
-            document.getElementById(
-              "contatoEmergenciaParentesco"
-            ).value
-
+          nome: document.getElementById("contatoEmergenciaNome").value,
+          telefone: document.getElementById("contatoEmergenciaTelefone").value,
+          parentesco: document.getElementById("contatoEmergenciaParentesco").value
         },
-
-        tipo:
-          document.getElementById("tipo").value
-
+        tipo: document.getElementById("tipo").value
       };
 
 
@@ -509,83 +363,49 @@
         !dados.dataNascimento ||
         !dados.sexo
       ) {
-
-        alert(
-          "Preencha todos os campos obrigatórios."
-        );
-
+        alert("Preencha todos os campos obrigatórios.");
         return;
-
       }
 
 
-      fetch(
-        "http://localhost:3000/atendimento",
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json"
-          },
-
-          body: JSON.stringify(dados)
-
-        }
-      )
-
+      fetch("http://localhost:3000/atendimento", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dados)
+      })
       .then(response => {
-
         if (response.ok) {
-
-          alert(
-            "Paciente cadastrado com sucesso!"
-          );
-
-          limparFormulario();
+          alert("Paciente cadastrado com sucesso!");
+          
+          // Redireciona para a página de triagem 
+          // (substitua "triagem.html" pelo nome exato do arquivo de triagem se for diferente)
+          window.location.href = "triagem.html";
 
         } else {
-
-          alert(
-            "Erro ao cadastrar paciente."
-          );
-
+          alert("Erro ao cadastrar paciente.");
         }
-
       })
-
       .catch(error => {
-
-        console.error(
-          "Erro na requisição:",
-          error
-        );
-
-        alert(
-          "Erro de conexão com o servidor."
-        );
-
+        console.error("Erro na requisição:", error);
+        alert("Erro de conexão com o servidor.");
       });
 
     }
 
 
     function limparFormulario() {
-
       document
         .querySelectorAll("input, select")
         .forEach(campo => {
-
           if (campo.type !== "file") {
             campo.value = "";
           }
-
         });
 
-      document.getElementById("tipo").value =
-        "Convenio";
-
+      document.getElementById("tipo").value = "Convenio";
     }
-
   </script>
 
 </body>
