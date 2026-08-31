@@ -6,8 +6,8 @@
   <title>Triagem - VG Salva Vidas</title>
   <style>
     /* ==========================================
-       RESET & VARIÁVEIS
-       ========================================== */
+        RESET & VARIÁVEIS
+        ========================================== */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -43,8 +43,8 @@
     }
 
     /* ==========================================
-       CONTAINER PRINCIPAL
-       ========================================== */
+        CONTAINER PRINCIPAL
+        ========================================== */
     .container {
       width: 100%;
       max-width: 800px;
@@ -55,8 +55,8 @@
     }
 
     /* ==========================================
-       CABEÇALHO
-       ========================================== */
+        CABEÇALHO
+        ========================================== */
     .header-container {
       display: flex;
       justify-content: space-between;
@@ -73,8 +73,8 @@
     }
 
     /* ==========================================
-       BOTÕES GERAIS
-       ========================================== */
+        BOTÕES GERAIS
+        ========================================== */
     .btn-abrir-tv {
       background-color: var(--secondary);
       color: #ffffff;
@@ -124,6 +124,22 @@
       background: #5a6268;
     }
 
+    .btn-selecionar {
+      background: var(--accent);
+      color: #ffffff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      margin-right: 8px;
+      transition: var(--transition);
+    }
+
+    .btn-selecionar:hover {
+      background: var(--accent-hover);
+    }
+
     .btn-salvar {
       width: 100%;
       background-color: var(--accent);
@@ -143,8 +159,8 @@
     }
 
     /* ==========================================
-       FILA DE PACIENTES
-       ========================================== */
+        FILA DE PACIENTES
+        ========================================== */
     .pacientes-fila {
       margin-bottom: 30px;
       background: var(--primary-light);
@@ -195,9 +211,14 @@
       font-size: 12px;
     }
 
+    .acoes-paciente {
+      display: flex;
+      gap: 5px;
+    }
+
     /* ==========================================
-       FORMULÁRIO DE TRIAGEM
-       ========================================== */
+        FORMULÁRIO DE TRIAGEM
+        ========================================== */
     h3 {
       color: var(--primary);
       margin-bottom: 15px;
@@ -235,8 +256,8 @@
     }
 
     /* ==========================================
-       RESULTADOS DA CLASSIFICAÇÃO DE RISCO
-       ========================================== */
+        RESULTADOS DA CLASSIFICAÇÃO DE RISCO
+        ========================================== */
     #resultado {
       padding: 12px;
       border-radius: 6px;
@@ -283,7 +304,7 @@
     <div class="pacientes-fila">
       <h3>
         Pacientes Cadastrados no Atendimento
-        <span>Clique em "Chamar na TV" para chamar ao guichê</span>
+        <span>Selecione para triagem ou chame na TV</span>
       </h3>
       
       <div id="fila-pacientes">
@@ -330,14 +351,14 @@
 
   <script>
     function carregarPacientes() {
-      fetch("/pacientes")
+      fetch("http://localhost:3000/pacientes")
         .then(r => {
           if (!r.ok) throw new Error("Erro na requisição");
           return r.json();
         })
         .then(pacientes => {
           const div = document.getElementById("fila-pacientes");
-          const fila = pacientes.filter(p => p.status === "triagem");
+          const fila = pacientes.filter(p => p.status === "triagem" || !p.status);
 
           if (fila.length === 0) {
             div.innerHTML = "<p style='color:#888; text-align:center;'>Nenhum paciente aguardando.</p>";
@@ -351,9 +372,12 @@
             item.innerHTML = `
               <div>
                 <strong>${p.nome}</strong><br>
-                <small>CPF: ${p.cpf || "—"} | Tipo: ${p.tipo || "—"}</small>
+                <small>CPF: ${p.cpf || p.documento || "—"} | Tipo: ${p.tipo || "—"}</small>
               </div>
-              <button class="btn-tv" onclick="chamarNaTV('${p.nome}')">📺 Chamar na TV</button>
+              <div class="acoes-paciente">
+                <button class="btn-selecionar" onclick="selecionarPaciente('${p.nome}')">📝 Preencher</button>
+                <button class="btn-tv" onclick="chamarNaTV('${p.nome}')">📺 Chamar</button>
+              </div>
             `;
             div.appendChild(item);
           });
@@ -364,8 +388,13 @@
         });
     }
 
+    function selecionarPaciente(nome) {
+      document.getElementById("nome").value = nome;
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
     function chamarNaTV(nome) {
-      fetch("/tv/chamar", {
+      fetch("http://localhost:3000/tv/chamar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -379,7 +408,7 @@
         return r.json();
       })
       .then(() => {
-        alert("✅ " + nome + " foi chamado na TV para o Guichê 01!");
+        alert("✅ " + nome + " foi chamado na TV!");
         carregarPacientes();
       })
       .catch(err => {
@@ -411,7 +440,7 @@
 
       const risco = classificarRisco(sintoma, temperatura);
 
-      fetch("/triagem", {
+      fetch("http://localhost:3000/triagem", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nome, sintoma, temperatura, alergia, observacao, risco })
@@ -420,7 +449,7 @@
         if (!r.ok) throw new Error("Erro ao salvar triagem");
         return r.json();
       })
-      .then(data => {
+      .then(() => {
         const resultado = document.getElementById("resultado");
         resultado.className = risco;
         resultado.innerHTML = "CLASSIFICAÇÃO DE RISCO: " + risco.toUpperCase();
