@@ -324,7 +324,7 @@
       grid-column: 1 / -1;
     }
 
-    /* Estilos do Modal de Pré-visualização da Alta */
+    /* Estilos do Modal de Formulário de Alta */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -377,46 +377,8 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
-      max-height: 60vh;
+      max-height: 70vh;
       overflow-y: auto;
-    }
-
-    /* Documento de Alta Visual */
-    .doc-preview {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 24px;
-      background: #fff;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .doc-preview h4 {
-      text-align: center;
-      color: var(--primary);
-      font-size: 1.15rem;
-      font-weight: 700;
-    }
-
-    .doc-preview .doc-sub {
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 12px;
-    }
-
-    .doc-field-group strong {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      display: block;
-      margin-bottom: 2px;
-    }
-
-    .doc-field-group p {
-      font-size: 0.95rem;
-      color: var(--text-main);
     }
 
     .modal-footer {
@@ -461,7 +423,7 @@
 
   <!-- Formulário de Prontuário/Consulta -->
   <div>
-    <div class="section-title">📝 Registro de Consulta e Alta</div>
+    <div class="section-title">📝 Registro de Consulta</div>
     <div class="consulta-form">
       
       <!-- Mini Formulário de Chamada Rápida -->
@@ -498,7 +460,7 @@
       </div>
 
       <div style="display: flex; justify-content: flex-end; gap: 12px;">
-        <button class="btn btn-pdf" style="padding: 12px 20px; font-size: 0.875rem;" onclick="abrirModalAlta()">📄 Gerar Alta em PDF</button>
+        <button class="btn btn-pdf" style="padding: 12px 20px; font-size: 0.875rem;" onclick="abrirModalAlta()">📄 Dar Alta ao Paciente</button>
         <button class="btn btn-primary" style="padding: 12px 24px; font-size: 0.875rem;" onclick="salvar()">Finalizar e Salvar Consulta</button>
       </div>
     </div>
@@ -506,42 +468,49 @@
 
 </div>
 
-<!-- Modal de Visualização da Alta Médica -->
+<!-- Modal de Formulário de Alta Médica -->
 <div id="modalAlta" class="modal-overlay">
   <div class="modal-card">
     <div class="modal-header">
-      <h3>📄 Comprovante de Alta Médica</h3>
+      <h3>📄 Formulário de Alta Médica</h3>
       <button class="close-btn" onclick="fecharModalAlta()">&times;</button>
     </div>
     <div class="modal-body">
-      <div class="doc-preview">
-        <h4>VG SALVA VIDAS - COMPROVANTE DE ALTA MÉDICA</h4>
-        <div class="doc-sub" id="doc-sub-info">Consultório: 01 | Data: 14/09/2026</div>
+      
+      <div class="form-group">
+        <label>Nome do Paciente</label>
+        <input id="alta-paciente" readonly style="background: #f1f5f9; font-weight: bold;">
+      </div>
 
-        <div class="doc-field-group">
-          <strong>Paciente:</strong>
-          <p id="doc-paciente">-</p>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Tipo de Alta</label>
+          <select id="alta-tipo">
+            <option value="Alta Médica Curada/Melhorada">Alta Médica (Melhorado)</option>
+            <option value="Alta a Pedido">Alta a Pedido</option>
+            <option value="Encaminhamento / Transferência">Encaminhamento / Transferência</option>
+          </select>
         </div>
-
-        <div class="doc-field-group">
-          <strong>Diagnóstico:</strong>
-          <p id="doc-diagnostico">-</p>
-        </div>
-
-        <div class="doc-field-group">
-          <strong>Medicação / Conduta Prescrita:</strong>
-          <p id="doc-medicacao">-</p>
-        </div>
-
-        <div class="doc-field-group">
-          <strong>Observações Clínicas e Orientações:</strong>
-          <p id="doc-obs">-</p>
+        <div class="form-group">
+          <label>Diagnóstico Final / CID</label>
+          <input id="alta-diagnostico" placeholder="Diagnóstico de saída">
         </div>
       </div>
+
+      <div class="form-group">
+        <label>Prescrição de Saída / Medicação Recomendada</label>
+        <textarea id="alta-medicacao" style="min-height: 70px;" placeholder="Medicamentos para uso domiciliar..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Orientações de Alta e Cuidados Domiciliares</label>
+        <textarea id="alta-obs" style="min-height: 90px;" placeholder="Recomendações de repouso, dieta, retorno ou sinais de alerta..."></textarea>
+      </div>
+
     </div>
     <div class="modal-footer">
-      <button class="btn" style="background: #e2e8f0; color: var(--text-main);" onclick="fecharModalAlta()">Fechar</button>
-      <button class="btn btn-pdf" style="padding: 10px 16px; font-size: 0.85rem;" onclick="baixarPDFAlta()">⬇️ Baixar PDF para Enviar</button>
+      <button class="btn" style="background: #e2e8f0; color: var(--text-main);" onclick="fecharModalAlta()">Cancelar</button>
+      <button class="btn btn-pdf" style="padding: 10px 18px; font-size: 0.85rem;" onclick="confirmarEBaixarPDFAlta()">📄 Confirmar Alta e Gerar PDF</button>
     </div>
   </div>
 </div>
@@ -674,24 +643,19 @@ function carregarMedicacoes() {
     });
 }
 
+/* Modal de Alta */
 function abrirModalAlta() {
   const paciente = document.getElementById("paciente").value;
   if (!paciente) {
-    alert("Selecione um paciente para gerar a alta.");
+    alert("Selecione um paciente para dar a alta.");
     return;
   }
 
-  const diagnostico = document.getElementById("diagnostico").value || "Não informado";
-  const medicacao = document.getElementById("medicacao").value || "Nenhuma medicação selecionada";
-  const obs = document.getElementById("obs").value || "Nenhuma observação informada.";
-  const consultorio = document.getElementById("consultorio-num").value || "01";
-  const dataHoje = new Date().toLocaleDateString('pt-BR');
-
-  document.getElementById("doc-sub-info").textContent = `Consultório: ${consultorio} | Data: ${dataHoje}`;
-  document.getElementById("doc-paciente").textContent = paciente;
-  document.getElementById("doc-diagnostico").textContent = diagnostico;
-  document.getElementById("doc-medicacao").textContent = medicacao;
-  document.getElementById("doc-obs").textContent = obs;
+  // Preenche o formulário do modal com o que já foi preenchido na consulta
+  document.getElementById("alta-paciente").value = paciente;
+  document.getElementById("alta-diagnostico").value = document.getElementById("diagnostico").value;
+  document.getElementById("alta-medicacao").value = document.getElementById("medicacao").value;
+  document.getElementById("alta-obs").value = document.getElementById("obs").value;
 
   document.getElementById("modalAlta").style.display = "flex";
 }
@@ -700,11 +664,12 @@ function fecharModalAlta() {
   document.getElementById("modalAlta").style.display = "none";
 }
 
-function baixarPDFAlta() {
-  const paciente = document.getElementById("paciente").value;
-  const diagnostico = document.getElementById("diagnostico").value || "Não informado";
-  const medicacao = document.getElementById("medicacao").value || "Nenhuma medicação selecionada";
-  const obs = document.getElementById("obs").value || "Nenhuma observação informada.";
+function confirmarEBaixarPDFAlta() {
+  const paciente = document.getElementById("alta-paciente").value;
+  const tipoAlta = document.getElementById("alta-tipo").value;
+  const diagnostico = document.getElementById("alta-diagnostico").value || "Não informado";
+  const medicacao = document.getElementById("alta-medicacao").value || "Nenhuma medicação prescrita";
+  const obs = document.getElementById("alta-obs").value || "Sem observações adicionais.";
   const consultorio = document.getElementById("consultorio-num").value || "01";
   const dataHoje = new Date().toLocaleDateString('pt-BR');
 
@@ -713,7 +678,7 @@ function baixarPDFAlta() {
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(18);
-  doc.text("VG SALVA VIDAS - COMPROVANTE DE ALTA MÉDICA", 105, 20, { align: "center" });
+  doc.text("VG SALVA VIDAS - TERMO DE ALTA MÉDICA", 105, 20, { align: "center" });
   
   doc.setFontSize(11);
   doc.setFont("helvetica", "normal");
@@ -726,27 +691,29 @@ function baixarPDFAlta() {
   doc.text("Dados do Paciente:", 20, 45);
   doc.setFont("helvetica", "normal");
   doc.text(`Nome: ${paciente}`, 20, 53);
+  doc.text(`Situação: ${tipoAlta}`, 20, 60);
 
   doc.setFont("helvetica", "bold");
-  doc.text("Diagnóstico:", 20, 68);
+  doc.text("Diagnóstico:", 20, 75);
   doc.setFont("helvetica", "normal");
-  doc.text(diagnostico, 20, 76, { maxWidth: 170 });
+  doc.text(diagnostico, 20, 83, { maxWidth: 170 });
 
   doc.setFont("helvetica", "bold");
-  doc.text("Medicação / Conduta Prescrita:", 20, 96);
+  doc.text("Medicação Prescrita para Casa / Conduta:", 20, 103);
   doc.setFont("helvetica", "normal");
-  doc.text(medicacao, 20, 104, { maxWidth: 170 });
+  doc.text(medicacao, 20, 111, { maxWidth: 170 });
 
   doc.setFont("helvetica", "bold");
-  doc.text("Observações Clínicas e Orientações:", 20, 124);
+  doc.text("Orientações Médicas e Cuidados:", 20, 131);
   doc.setFont("helvetica", "normal");
-  doc.text(obs, 20, 132, { maxWidth: 170 });
+  doc.text(obs, 20, 139, { maxWidth: 170 });
 
-  doc.line(60, 190, 150, 190);
+  doc.line(60, 200, 150, 200);
   doc.setFontSize(10);
-  doc.text("Assinatura e Carimbo do Médico(a)", 105, 196, { align: "center" });
+  doc.text("Assinatura e Carimbo do Médico(a)", 105, 206, { align: "center" });
 
   doc.save(`Alta_Medica_${paciente.replace(/\s+/g, '_')}.pdf`);
+  fecharModalAlta();
 }
 
 function salvar() {
